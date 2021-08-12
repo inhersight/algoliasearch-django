@@ -124,7 +124,7 @@ class AlgoliaEngine(object):
         adapter = self.get_adapter_from_instance(instance)
         adapter.save_record(instance, **kwargs)
 
-    def save_records(self, model, qs, batch_size=1000):
+    def save_records(self, model, qs, batch_size=1000, force_index=False):
         """
         Saves multiple records.
 
@@ -132,7 +132,7 @@ class AlgoliaEngine(object):
         can specify the size of the batch send to Algolia with batch_size (default to 1000).
         """
         adapter = self.get_adapter(model)
-        adapter.save_records(qs, batch_size=batch_size)
+        adapter.save_records(qs, batch_size=batch_size, force_index=force_index)
 
     def delete_record(self, instance):
         """Deletes the record."""

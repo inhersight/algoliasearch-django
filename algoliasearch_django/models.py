@@ -316,7 +316,7 @@ class AlgoliaIndex(object):
                 logger.warning('%s FROM %s NOT SAVED: %s', obj['objectID'],
                                self.model, e)
 
-    def save_records(self, qs, batch_size=1000):
+    def save_records(self, qs, batch_size=1000, force_index=False):
         """
         Saves multiple records.
 
@@ -325,7 +325,7 @@ class AlgoliaIndex(object):
         """
         batch = []
         for instance in qs:
-            if not self._should_index(instance):
+            if not force_index and not self._should_index(instance):
                 continue  # should not index
 
             batch.append(self.get_raw_record(instance))
