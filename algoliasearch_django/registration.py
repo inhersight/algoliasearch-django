@@ -129,6 +129,16 @@ class AlgoliaEngine(object):
         adapter = self.get_adapter_from_instance(instance)
         adapter.delete_record(instance)
 
+    def delete_records(self, model, qs, batch_size=1000):
+        """
+        Deletes multiple records.
+
+        This method is optimized for speed. It takes a model class and QuerySet. Optionally, you
+        can specify the size of the batch send to Algolia with batch_size (default to 1000).
+        """
+        adapter = self.get_adapter(model)
+        adapter.delete_records(qs, batch_size=batch_size)
+
     def update_records(self, model, qs, batch_size=1000, **kwargs):
         """
         Updates multiple records.

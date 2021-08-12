@@ -329,12 +329,31 @@ class AlgoliaIndex(object):
                 logger.warning('%s FROM %s NOT DELETED: %s', objectID,
                                self.model, e)
 
+    def delete_records(self, qs, batch_size=1000):
+        """
+        Deletes multiple records.
+
+        This method is optimized for speed. It takes a QuerySet. Optionally, you can
+        specify the size of the batch send to Algolia with batch_size (default to 1000).
+        """
+        batch = []
+        objectsIDs = qs.only(self.custom_objectID).values_list(self.custom_objectID, flat=True)
+        for elt in objectsIDs:
+            batch.append(elt)
+
+            if len(batch) >= batch_size:
+                self.__index.delete_objects(batch)
+                batch = []
+
+        if len(batch) > 0:
+            self.__index.delete_objects(batch)
+
     def update_records(self, qs, batch_size=1000, **kwargs):
         """
         Updates multiple records.
 
         This method is optimized for speed. It takes a QuerySet and the same
-        arguments as QuerySet.update(). Optionnaly, you can specify the size
+        arguments as QuerySet.update(). Optionally, you can specify the size
         of the batch send to Algolia with batch_size (default to 1000).
 
         >>> from algoliasearch_django import update_records

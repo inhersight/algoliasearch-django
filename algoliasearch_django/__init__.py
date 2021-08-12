@@ -28,6 +28,7 @@ get_adapter_from_instance = algolia_engine.get_adapter_from_instance
 
 save_record = algolia_engine.save_record
 delete_record = algolia_engine.delete_record
+delete_records = algolia_engine.delete_records
 update_records = algolia_engine.update_records
 raw_search = algolia_engine.raw_search
 clear_index = algolia_engine.clear_index # TODO: deprecate
