@@ -27,6 +27,7 @@ get_adapter = algolia_engine.get_adapter
 get_adapter_from_instance = algolia_engine.get_adapter_from_instance
 
 save_record = algolia_engine.save_record
+save_records = algolia_engine.save_records
 delete_record = algolia_engine.delete_record
 delete_records = algolia_engine.delete_records
 update_records = algolia_engine.update_records

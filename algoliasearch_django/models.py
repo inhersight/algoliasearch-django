@@ -316,6 +316,26 @@ class AlgoliaIndex(object):
                 logger.warning('%s FROM %s NOT SAVED: %s', obj['objectID'],
                                self.model, e)
 
+    def save_records(self, qs, batch_size=1000):
+        """
+        Saves multiple records.
+
+        This method is optimized for speed. It takes a QuerySet. Optionally, you can
+        specify the size of the batch send to Algolia with batch_size (default to 1000).
+        """
+        batch = []
+        for instance in qs:
+            if not self._should_index(instance):
+                continue  # should not index
+
+            batch.append(self.get_raw_record(instance))
+            if len(batch) >= batch_size:
+                self.__index.save_objects(batch)
+                batch = []
+
+        if len(batch) > 0:
+            self.__index.save_objects(batch)
+
     def delete_record(self, instance):
         """Deletes the record."""
         objectID = self.objectID(instance)
